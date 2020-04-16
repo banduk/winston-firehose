@@ -48,8 +48,6 @@ const FirehoseLogger = class FirehoseLogger extends Transport {
   constructor(options) {
     super(options);
     this.name = 'FirehoseLogger';
-    this.level = options.level || 'info';
-    this.formatter = options.formatter || JSON.stringify;
 
     const streamName = options.streamName;
     const firehoseOptions = options.firehoseOptions || {};
@@ -64,8 +62,7 @@ const FirehoseLogger = class FirehoseLogger extends Transport {
     if (callback) {
       setImmediate(callback);
     }
-    const message = Object.assign({ timestamp: (new Date()).toISOString() }, info[MESSAGE]);
-    return this.firehoser.send(this.formatter(message));
+    return this.firehoser.send(`${info[MESSAGE]}\n`);
   }
 };
 
