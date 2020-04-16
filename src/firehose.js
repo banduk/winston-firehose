@@ -1,5 +1,6 @@
 const Transport = require('winston-transport');
 const AWS = require('aws-sdk');
+const { MESSAGE } = require('triple-beam');
 
 AWS.config.setPromisesDependency(Promise);
 
@@ -63,7 +64,7 @@ const FirehoseLogger = class FirehoseLogger extends Transport {
     if (callback) {
       setImmediate(callback);
     }
-    const message = Object.assign({ timestamp: (new Date()).toISOString() }, info);
+    const message = Object.assign({ timestamp: (new Date()).toISOString() }, info[MESSAGE]);
     return this.firehoser.send(this.formatter(message));
   }
 };
